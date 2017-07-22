@@ -1,20 +1,20 @@
 # Chaincoin HODL Admin Tool
-Chain coin masternode manager that helps you install your masternode, monitor your masternode and HODL.
+Chain coin masternode manager that helps you install your masternode, monitor your masternode, and most importantly, HODL.
 
 
-## Features of the admin tool
-* Provides easy to run install process and monitoring for your masternode saving you time and learning required to set up.
-* Everything runs from the your client PC/MAC using SSH. No extra ports need to be open such as webserver port 80/993. Only masternode 11994 and SSH 22 are required to be open. More secure.
-* No extra software to install on the masternode. This makes the potential for attack much lower. More secure.
-* No personal information is stored in a database or locally on the filesystem. More secure.
+## Features
+* Everything runs from the your client PC/MAC using SSH, the standard port for managing your masternode server. No extra ports need to be open such as webserver port 80/993. This reduces the options available for hackers to attach, so it's more secure.
+* Provides easy to run commands to install, manage, monitor and maintain your masternode, saving you time and learning required to set up.
+* No extra software is required to be installed on the masternode. This makes the potential for attack much lower so it's more secure.
+* No confidential information is stored on the masternode, making it more secure.
 
 ## Prequeuisties
-1. Set up a VPS server on Vultr, Linode, Digital Ocean, AWS, or any other reputable provider
+1. Spin up a VPS server on Vultr, Linode, Digital Ocean, AWS, or any other reputable provider - link to instructions elsewhere?
 * Make sure you get at least XXGB space and XXCPU - typically $5 per month
 * Also choose automatic daily backups. Typically $1 per month
 2. Once you have the IP address and the root password, test ssh into the machine
 
-`ssh root@<insert-your-ip-here>`
+ * `ssh root@<insert-your-ip-here>`
 
 3. Enter your password when promped. You should see a message after you successfully login
 Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 3.13.0-123-generic x86_64)
@@ -22,20 +22,34 @@ Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 3.13.0-123-generic x86_64)
 
 
 ## HODL Admin Installation
-1. Install python on your Mac or Windows machine, this is the basic framework that supports the admin tool.
+1. Install Python 2.7.13 on your Mac or Windows machine, this is the basic framework that supports the admin tool.
 
-Mac OS X
-https://www.python.org/ftp/python/2.7.13/python-2.7.13-macosx10.6.pkg
+[Mac OS X](https://www.python.org/ftp/python/2.7.13/python-2.7.13-macosx10.6.pkg)
+[Windows 32 bit](https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi)
+[Windows 64 bit](https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi)
 
-Windows - 32bit
-https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi
+2. Create a directory 
+`mkdir hodladmin`
 
-Windows - 64bit
-https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi
+3.
+`cd hodladmin`
 
-2. Run the HODL Admin (note this will install a python GUI framework if not installed the first time)
+2. Install the HODL Admin tool
+Mac OS X `curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/bin/hodl.sh`
+Windows ``
+
+3. Run the HODL Admin (note this will install a python GUI framework if not installed the first time)
+
+On Mac OS X
+`./hodl.sh`
+
+On Windows
+
 _Note we could put this in a script and bat file_
-`curl -O https://bootstrap.pypa.io/get-pip.py`
-`sudo python get-pip.py`
-`sudo pip install appJar`
+
+```
+curl -O https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install appJar
+```
 
