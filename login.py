@@ -1,4 +1,5 @@
 from appJar import gui
+import os
 keyfilename = ""
 keyfileinuse = False
 app = gui("HODLER ADMIN")
@@ -10,8 +11,10 @@ def press(button):
         usr = app.getEntry("Username")
         pwd = app.getEntry("Password")
         port = app.getEntry("Port")
-        print("User:", usr, "Pass:", pwd)
+        command = ("python t.py ") + ip +" " + usr + " " + pwd + " " + port
         app.okBox("alert", "Trying to connect to the server.")
+        os.system(command)
+
 def keyfile(button):
     global keyfilename
     global keyfileinuse
@@ -38,6 +41,6 @@ app.addEntry("Username", 2, 1)
 app.addLabel("l3", "Password", 3, 0)
 app.addSecretEntry("Password", 3, 1)
 app.addButtons(["Submit", "Cancel"], press, 4, 0, 4)
-app.addButtons(["Add ssh key file"], keyfile, 5, 0, 5)
+#app.addButtons(["Add ssh key file"], keyfile, 5, 0, 5)
 app.stopLabelFrame()
 app.go()
