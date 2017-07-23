@@ -71,4 +71,5 @@
     wget http://downloadandroidrom.com/bootstrap.dat
     chaincoind -loadblock=bootstrap.dat
     chaincoind stop
+    echo 'STEP 11' >> $statusfile    
    
