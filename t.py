@@ -2,10 +2,14 @@ from appJar import gui
 import random
 import sys
 import paramiko
-past = ["1","2"]
+
+app = gui()
+past = []
+
 #Def Func
 def updatelist(x):
     past.extend(x)
+    app.updateListItems("list", past)
 def startmaster(button):
     global port
     global ip
@@ -115,7 +119,6 @@ resp=''.join(outlines)
 print(resp)
 ssh.close()
 #ssh connection end
-app = gui()
 app.setFont(10)
 app.addButton("Start masternode", startmaster)
 app.addButton("Start masternode wallet", startwallet)
