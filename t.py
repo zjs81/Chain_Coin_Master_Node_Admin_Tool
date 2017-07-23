@@ -9,28 +9,31 @@ def startmaster(button):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    ssh.exit()
+    ssh.close()
 def send(button):
     cmd='chaincoind masternode start'
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    ssh.exit()
+    ssh.close()
 def restart(button):
     cmd='restart'
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    ssh.exit()
+    outlines=stdout.readlines()
+    resp=''.join(outlines)
+    print(resp)
+    ssh.close()
 def startwallet(button):
     cmd='chaincoind --daemon'
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    ssh.exit()
+    ssh.close()
 def setup(button):
     pass
 def refresh(button):
@@ -39,7 +42,7 @@ def refresh(button):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    ssh.exit()
+    ssh.close()
 #Done Def Func
 #Starts takeing args
 keyfilename = ""
