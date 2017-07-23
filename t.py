@@ -81,19 +81,19 @@ def installmasternode(button):
     stdin,stdout,stderr=ssh.exec_command(cmd)
     exit_status = stdout.channel.recv_exit_status()
     if exit_status != 0:
-        print("Error", exit_status)
+        updateMessage("Error")
         return
 
     stdin,stdout,stderr=ssh.exec_command(cmd2)
     exit_status = stdout.channel.recv_exit_status()
     if exit_status != 0:
-        print("Error", exit_status)
+        updateMessage("Error")
         return
 
     stdin,stdout,stderr=ssh.exec_command(cmd3)    
     exit_status = stdout.channel.recv_exit_status()
     if exit_status != 0:
-        print("Error", exit_status)
+        updateMessage("Error")
         return
 
     ssh.close()
