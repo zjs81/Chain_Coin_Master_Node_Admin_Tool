@@ -33,8 +33,11 @@ Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 3.13.0-123-generic x86_64)
 **Mac OS X**
 ```
 mkdir hodladmin
-curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/bin/hodl.sh
-chmod +x hodl.sh
+cd hodladmin
+curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/hodl.sh
+curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/t.py
+curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/login.py
+chmod +x ./hodl.sh
 ./hodl.sh
 ```
 *Enter password when prompted*
@@ -42,8 +45,9 @@ chmod +x hodl.sh
 **Windows**
 XXX
 
-3. When you run this command again, you jsut need to run
+3. When you run this command again, run
 
 ```
-./hodl.sh
+cd hodladmin
+./exec/hodl.sh
 ```
