@@ -5,3 +5,6 @@ sudo python get-pip.py
 sudo pip install appJar
 sudo pip install paramiko
 sudo python login.py 
+
+#need to install firewall without gui
+#system-config-firewall-tui
