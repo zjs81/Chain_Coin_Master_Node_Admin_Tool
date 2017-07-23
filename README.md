@@ -43,11 +43,16 @@ chmod +x ./hodl.sh
 *Enter password when prompted*
 
 **Windows**
-XXX
+
+To be written
+download this XXX
+double click hodl.bat
 
 3. When you run this command again, run
 
+**Mac OS X**
+
 ```
 cd hodladmin
-./exec/hodl.sh
+.//hodl.sh
 ```
