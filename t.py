@@ -4,7 +4,7 @@ import sys
 import paramiko
 
 app = gui()
-past = []
+past = ['1']
 
 #Def Func
 def updatelist(x):
