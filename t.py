@@ -2,6 +2,49 @@ from appJar import gui
 import sys
 import paramiko
 
+#Def Func
+def startmaster(button):
+    cmd='chaincoind masternode start'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    ssh.close()
+def send(button):
+    cmd='chaincoind masternode start'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    ssh.close()
+def restart(button):
+    cmd='restart'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    outlines=stdout.readlines()
+    resp=''.join(outlines)
+    print(resp)
+    ssh.close()
+def startwallet(button):
+    cmd='chaincoind --daemon'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    ssh.close()
+def setup(button):
+    pass
+def refresh(button):
+    cmd='chaincoind listtransactions'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    ssh.close()
+#Done Def Func
+#Starts takeing args
 keyfilename = ""
 keyfileinuse = False
 port = int(sys.argv[4])
@@ -20,12 +63,16 @@ stdin,stdout,stderr=ssh.exec_command(cmd)
 outlines=stdout.readlines()
 resp=''.join(outlines)
 print(resp)
+ssh.close()
 #ssh connection end
-app = gui("HODLER ADMIN", "400x200")
-
-
+app = gui()
 app.setFont(10)
-app.addLabelOptionBox("Options", ["File","Install MasterNode"])
+app.addButton("Start masternode", startmaster)
+app.addButton("Start masternode wallet", startwallet)
+app.addButton("restart server", restart)
+app.addButton("Send chc from masternode", send)
+app.addButton("Refresh Balance", refresh)
+app.addButton("open setup", setup)
+app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
 
-print port, ip, username, password
 app.go()
