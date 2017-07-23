@@ -97,7 +97,7 @@ username = sys.argv[2]
 password = sys.argv[3]
 #The stuff above takes args from login.py
 balance = 0
-#Gets balance
+#Gets balance doesnt work yet
 #ssh connection start
 cmd='uptime'
 ssh=paramiko.SSHClient()
