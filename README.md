@@ -3,7 +3,7 @@ HODL Admin is a tool that helps you manage your Chaincoin masternodes. Install y
 
 
 ## Features
-* Provides easy to run commands to install, manage, monitor and maintain your masternode, saving you time and learning required to set up.
+* Provides a graphical interface to run commands to install, manage, monitor and maintain your masternode, saving you time and learning required to set up.
 * No additional software needs to be installed on the masternode reducing the potential for attack so it's more secure.
 * No additional ports needs to be opened, it uses the SSH port just like you need to use anyway, reducing the potential for attack so it's more secure.
 * No confidential information is stored on the masternode, making it more secure.
