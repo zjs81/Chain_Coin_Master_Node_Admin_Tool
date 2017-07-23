@@ -12,7 +12,7 @@ def press(button):
         pwd = app.getEntry("Password")
         port = app.getEntry("Port")
         command = ("python t.py ") + ip +" " + usr + " " + pwd + " " + port
-        app.okBox("alert", "Trying to connect to the server.")
+        #app.okBox("alert", "Trying to connect to the server.")
         os.system(command)
 
 def keyfile(button):
