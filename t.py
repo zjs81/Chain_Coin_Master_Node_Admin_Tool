@@ -118,6 +118,7 @@ app.addButton("Send chc from masternode", send)
 app.addButton("Refresh Balance", refresh)
 app.addButton("open setup", installmasternode)
 app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
-def updatelist():
+def updatelist(x):
+    past.extend(x)
     app.addListBox("list", past)
 app.go()
