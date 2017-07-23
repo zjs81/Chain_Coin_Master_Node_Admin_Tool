@@ -67,30 +67,14 @@ def startwallet(button):
     print(resp)
     ssh.close()
 def installmasternode(button):
-    updateMessage("echo installing")
-    cmd='yum -y install wget;yum -y install epel-release;yum -y install system-config-firewall-tui bzip2 git clone autoconf automake gcc-c++ boost-devel openssl-devel;yum -y update;cd /usr/src;wget https://www.openssl.org/source/openssl-1.0.2-latest.tar.gz;tar -zxf openssl-1.0.2-latest.tar.gz;cd openssl-1.0.2l;export CFLAGS="-fPIC";./config --prefix=/opt/openssl --openssldir=/opt/openssl enable-ec enable-ecdh enable-ecdsa -fPIC shared;make all;make install;cd ~;mkdir chaincoin;cd ~/chaincoin;wget http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz;mkdir db4;cd db4;tar xvf ../db-4.8.30.NC.tar.gz;cd db-4.8.30.NC/build_unix/;../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/root/chaincoin/db4/;make;make install;cd ..;cd ..;cd ..;wget http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download -O boost_1_55_0.tar.bz2;tar jxvf boost_1_55_0.tar.bz2;cd boost_1_55_0;./bootstrap.sh;./b2 --prefix=/root/chaincoin/deps link=static runtime-link=static install;cd ..;cd /usr/local/bin;rm chaincoind -rf; rm chaincoin-cli -rf;wget http://highoncoins.com/chaincoin/centos7/chaincoin-cli; wget http://highoncoins.com/chaincoin/centos7/chaincoind;chmod 700 chaincoin*;cd ~'
-    # TODO pull masternode public IP address
-    updateMessage("creating conf file")
-    cmd2='mkdir ~/.chaincoin/;cd ~/.chaincoin/;echo $"rpcuser=username\nrpcpassword=somepassword\nserver=1\nlisten=1\nmasternode=1\nmasternodeaddr=PutyourIPADDRESSHERE:11994" >chaincoin.conf'
-    updateMessage("downloading bootstrap and initiating wallet")
-    cmd3='cd ~/.chaincoin;wget http://downloadandroidrom.com/bootstrap.dat;chaincoind -loadblock=bootstrap.dat;chaincoind stop'
     # check installation status and update status file
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
+    
+    updateMessage("Installing")
+    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh'
     stdin,stdout,stderr=ssh.exec_command(cmd)
-    exit_status = stdout.channel.recv_exit_status()
-    if exit_status != 0:
-        updateMessage("Error")
-        return
-
-    stdin,stdout,stderr=ssh.exec_command(cmd2)
-    exit_status = stdout.channel.recv_exit_status()
-    if exit_status != 0:
-        updateMessage("Error")
-        return
-
-    stdin,stdout,stderr=ssh.exec_command(cmd3)    
     exit_status = stdout.channel.recv_exit_status()
     if exit_status != 0:
         updateMessage("Error")
