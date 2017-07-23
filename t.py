@@ -4,6 +4,8 @@ import sys
 import paramiko
 past = ["1","2"]
 #Def Func
+def updatelist(x):
+    past.extend(x)
 def startmaster(button):
     global port
     global ip
@@ -121,8 +123,7 @@ app.addButton("restart server", restart)
 app.addButton("Send chc from masternode", send)
 app.addButton("Refresh Balance", refresh)
 app.addButton("Install masternode", installmasternode)
+app.addListBox("list", past)
 app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
-def updatelist(x):
-    past.extend(x)
-    app.addListBox("list", past)
 app.go()
+updatelist("Ready")
