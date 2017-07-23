@@ -12,20 +12,26 @@ password = sys.argv[3]
 balance = 0
 #Gets balance
 #ssh connection start
-cmd='uptime'
-ssh=paramiko.SSHClient()
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect(ip,port,username,password)
-stdin,stdout,stderr=ssh.exec_command(cmd)
-outlines=stdout.readlines()
-resp=''.join(outlines)
-print(resp)
+try:
+    cmd='uptime'
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    outlines=stdout.readlines()
+    resp=''.join(outlines)
+    print(resp)
+
 #ssh connection end
+
 app = gui("HODLER ADMIN", "400x200")
-
-
 app.setFont(10)
-app.addLabelOptionBox("Options", ["File","Install MasterNode"])
+app.addButton("Start masternode", startmaster)
+app.addButton("Send chc from masternode", send)
+app.addButton("restart server", restart)
+app.addButton("Start masternode wallet", startwallet)
+app.addButton("open setup", setup)
+app.addButton("Refresh Balance", Refresh Balance)
+app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending or starting the masternode. So It can sync")
 
-print port, ip, username, password
 app.go()
