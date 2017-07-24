@@ -18,7 +18,7 @@ def checkStatus():
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
-    
+
     updateMessage("Checking status")
     cmd='cd hodladmin;./checkstatus.sh'
     stdin,stdout,stderr=ssh.exec_command(cmd)
@@ -90,7 +90,7 @@ def bootstrapAdmin(button):
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
-    
+
     updateMessage("Bootstrapping admin")
     cmd='test -d "hodladmin" && { ./hodladmin/bootstrap.sh; } || { mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/bootstrap.sh;chmod +x bootstrap.sh;./bootstrap.sh; }'
     stdin,stdout,stderr=ssh.exec_command(cmd)
@@ -102,13 +102,13 @@ def bootstrapAdmin(button):
     #TODO pull status of masternode installation to detrmine what still needs to be done and what to show in the UI
 
 def installMasternode(button):
-    
+
     #TODO support creation of a non-root masternode user with password set by the admin user
 
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
-    
+
     updateMessage("Installing masternode software")
     cmd='./hodladmin/install.sh &'
     stdin,stdout,stderr=ssh.exec_command(cmd)
@@ -159,13 +159,29 @@ ssh=paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh.connect(ip,port,username,password)
 stdin,stdout,stderr=ssh.exec_command(cmd)
-outlines=stdout.readlines()
-resp=''.join(outlines)
+resp = stdout.readlines()
+
 print(resp)
 ssh.close()
+def check():
+    cmd = "touch serverlog.txt"
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    ssh.exec_command(cmd)
+
+    stdin,stdout,stderr=ssh.exec_command("cat serverlog.txt | xargs echo")
+
+    outlines=stdout.readlines()
+    showStartMasternode()
+    if "install" in outlines:
+        pass
+    if "statuson" in outlines:
+        pass
 #ssh connection end
 app.setFont(10)
-app.addButton("Start masternode", startmaster)
+def showStartMasternode():
+    app.addButton("Start masternode", startmaster)
 app.addButton("Start masternode wallet", startwallet)
 app.addButton("restart server", restart)
 app.addButton("Send chc from masternode", send)
@@ -176,5 +192,6 @@ app.addButton("Install Masternode", installMasternode)
 app.addEmptyMessage("list")
 app.addEmptyMessage("status")
 updateMessage("Ready")
-app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync") 
+app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
+check()
 app.go()
