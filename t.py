@@ -92,7 +92,7 @@ def installmasternode(button):
     ssh.connect(ip,port,username,password)
     
     updateMessage("Installing")
-    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/checkstatus.sh;chmod +x checkstatus.sh;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh &'
+    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh &'
     stdin,stdout,stderr=ssh.exec_command(cmd)
     exit_status = stdout.channel.recv_exit_status()
     if exit_status == 0:
@@ -104,7 +104,7 @@ def installmasternode(button):
 
     if installstarted:
         app.registerEvent(checkStatus)
-        app.setPollTime(1000)
+        app.setPollTime(5000)
 
     ssh.close()
 

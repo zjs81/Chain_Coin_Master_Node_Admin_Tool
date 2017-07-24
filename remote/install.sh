@@ -3,7 +3,14 @@
 # TODO Logic for determining OS and choosing the right yum/atp commands
 
 statusfile=~/hodladmin/status.log
+
+# Pull additional remote scripts
 touch $statusfile  
+cd ~/hodladmin
+curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/checkstatus.sh
+chmod +x checkstatus.sh
+
+cd~
 echo 'STEP 1' >> $statusfile
 yum -y install wget
 echo 'STEP 2' >> $statusfile
