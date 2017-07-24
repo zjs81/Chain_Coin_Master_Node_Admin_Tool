@@ -1,0 +1,1 @@
+cat ~/hodladmin/status.log

@@ -5,11 +5,24 @@ import paramiko
 
 app = gui()
 past = []
+installstarted = True
 
 #Def Func
 def updateMessage(x):
-    past.append(x)
-    app.setMessage("list", past)
+    #past.append(x)
+    app.setMessage("list", x)
+
+def checkStatus():
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    
+    updateMessage("Checking status")
+    cmd='cd hodladmin;./checkstatus.sh'
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    for line in stdout:
+        updateMessage(line)
+
 def startmaster(button):
     global port
     global ip
@@ -24,6 +37,7 @@ def startmaster(button):
     resp=''.join(outlines)
     print(resp)
     ssh.close()
+
 def send(button):
     global port
     global ip
@@ -38,6 +52,7 @@ def send(button):
     resp=''.join(outlines)
     print(resp)
     ssh.close()
+
 def restart(button):
     global port
     global ip
@@ -52,6 +67,7 @@ def restart(button):
     resp=''.join(outlines)
     print(resp)
     ssh.close()
+
 def startwallet(button):
     global port
     global ip
@@ -66,22 +82,34 @@ def startwallet(button):
     resp=''.join(outlines)
     print(resp)
     ssh.close()
+
 def installmasternode(button):
-    # check installation status and update status file
+    
+    #TODO support creation of a non-root masternode user with password set by the admin user
+
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     
     updateMessage("Installing")
-    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh'
+    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/checkstatus.sh;chmod +x checkstatus.sh;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh &'
     stdin,stdout,stderr=ssh.exec_command(cmd)
     exit_status = stdout.channel.recv_exit_status()
-    if exit_status != 0:
-        updateMessage("Error")
-        return
+    if exit_status == 0:
+        installstarted = True
+        updateMessage("Install started")
+    else
+        installstarted = False
+        updateMessage("Install error")
+
+    if installstarted:
+        app.registerEvent(checkStatus)
+        app.setPollTime(1000)
 
     ssh.close()
+    
 #TODO need a genkey function and wallet creation command. genkey needs to append to chaincoin.conf
+
 def refresh(button):
     global port
     global ip
