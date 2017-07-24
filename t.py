@@ -13,6 +13,8 @@ def updateMessage(x):
     app.setMessage("list", x)
 
 def checkStatus():
+
+    #TODO add handling for a network connection drop.
     ssh=paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
@@ -83,7 +85,23 @@ def startwallet(button):
     print(resp)
     ssh.close()
 
-def installmasternode(button):
+def bootstrapAdmin(button):
+
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,port,username,password)
+    
+    updateMessage("Bootstrapping admin")
+    cmd='test -d "hodladmin" && { ./hodladmin/bootstrap.sh; } || { mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/bootstrap.sh;chmod +x bootstrap.sh;./bootstrap.sh; }'
+    stdin,stdout,stderr=ssh.exec_command(cmd)
+    outlines=stdout.readlines()
+    resp=''.join(outlines)
+    print(resp)
+    ssh.close()
+
+    #TODO pull status of masternode installation to detrmine what still needs to be done and what to show in the UI
+
+def installMasternode(button):
     
     #TODO support creation of a non-root masternode user with password set by the admin user
 
@@ -91,8 +109,8 @@ def installmasternode(button):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,port,username,password)
     
-    updateMessage("Installing")
-    cmd='mkdir hodladmin;cd hodladmin;curl -O https://raw.githubusercontent.com/zjs81/Chain_Coin_Master_Node_Admin_Tool/master/remote/install.sh;chmod +x install.sh;./install.sh &'
+    updateMessage("Installing masternode software")
+    cmd='./hodladmin/install.sh &'
     stdin,stdout,stderr=ssh.exec_command(cmd)
     exit_status = stdout.channel.recv_exit_status()
     if exit_status == 0:
@@ -152,8 +170,11 @@ app.addButton("Start masternode wallet", startwallet)
 app.addButton("restart server", restart)
 app.addButton("Send chc from masternode", send)
 app.addButton("Refresh Balance", refresh)
-app.addButton("Install masternode", installmasternode)
+app.addButton("Initialize Tool", bootstrapAdmin)
+app.addButton("Install Masternode", installMasternode)
+
 app.addEmptyMessage("list")
+app.addEmptyMessage("status")
 updateMessage("Ready")
 app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync") 
 app.go()
