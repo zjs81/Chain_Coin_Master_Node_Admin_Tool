@@ -98,7 +98,7 @@ def installmasternode(button):
     if exit_status == 0:
         installstarted = True
         updateMessage("Install started")
-    else
+    else:
         installstarted = False
         updateMessage("Install error")
 
@@ -107,7 +107,7 @@ def installmasternode(button):
         app.setPollTime(1000)
 
     ssh.close()
-    
+
 #TODO need a genkey function and wallet creation command. genkey needs to append to chaincoin.conf
 
 def refresh(button):
