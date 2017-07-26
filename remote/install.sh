@@ -59,10 +59,11 @@ wget http://highoncoins.com/chaincoin/centos7/chaincoind
 chmod 700 chaincoin*
 cd ~
 
+# TODO check for compiler errors
+
 echo 'STEP 10' >> $statusfile
 cd ~
 mkdir ~/.chaincoin/
-cd ~/.chaincoin/
 
 #TODO handle methods to get IP address on different O/S
 # Consider a public method - then it's the same on all
@@ -70,14 +71,36 @@ cd ~/.chaincoin/
 ipaddress=`ip addr show label eth0 | grep "inet" | awk '{match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/); ip = substr($0,RSTART,RLENGTH); print ip}' | head -1`
 echo ${ipaddress}  > $ipaddressfile  
 
-# generate 
-echo $'rpcuser=username\nrpcpassword=somepassword\nserver=1\nlisten=1\nmasternode=1\nmasternodeaddr='${ipaddress}':11994' >chaincoin.conf
+# Generate randon username and password for the RPC access to the server
+randonusername=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo ''`
+randonpassword=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo ''`
+
+# generate chaincoin conf file
+echo -e $'rpcuser='${randonusername}'\nrpcpassword='${randonpassword}'\nserver=1' >~/.chaincoin/chaincoin.conf
 echo 'STEP 11' >> $statusfile    
 cd ~/.chaincoin
 wget http://downloadandroidrom.com/bootstrap.dat
-chaincoind -loadblock=bootstrap.dat
+cd ..
+chaincoind -loadblock=~/.chaincoin/bootstrap.dat &
+sleep 30m
 chaincoind stop
 echo 'STEP 12' >> $statusfile    
 
+# append the conf file with masternode setup
+# TODO Populate the masternode private key
+# Consider moving this step to separate function so that the private key can be securely generated and returned to the client
+# masternodeprivkey=pasteyourmasternodekeyhere
+echo -e $'listen=1\nmasternode=1\nmasternodeaddr='${ipaddress}':11994\nmasternodeprivkey=pasteyourmasternodekeyhere' >>~/.chaincoin/chaincoin.conf
+
+echo 'STEP 13' >> $statusfile    
+
 # TODO set up firewall configurattion for 22 and 11994
-# TODO set up cron job for always keeping the masternode up..
+# firewall-cmd 
+
+# TODO set up cron job / system startup script for always keeping the masternode up if the server is restarted
+
+# TODO add the following to chaincoin.conf to log alerts
+# and have the HODL tool pull them on open. Could also pipe this into mail so gets user attention
+# alertnotify=echo %s >> ~/.chaincoin/chaincoindalert.log
+
+# TODO what happens if the server is destroyed? How do we handle a restore from backup???
