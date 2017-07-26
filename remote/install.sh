@@ -2,12 +2,15 @@
 
 # TODO Logic for determining OS and choosing the right yum/atp commands
 
+#TODO create function to write status to file
+
 statusfile=~/hodladmin/status.log
+ipaddressfile=~/hodladmin/ipaddress.log
 
 # Pull additional remote scripts
 touch $statusfile  
 
-cd~
+cd ~
 echo 'STEP 1' >> $statusfile
 yum -y install wget
 echo 'STEP 2' >> $statusfile
@@ -60,14 +63,15 @@ echo 'STEP 10' >> $statusfile
 cd ~
 mkdir ~/.chaincoin/
 cd ~/.chaincoin/
-# TODO pull public ip address to populate the file
-# Public methods
-# wget -qO- http://ipecho.net/plain ; echo
-# dig +short myip.opendns.com @resolver1.opendns.com
 
-#ipaddress=LANG=c ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
-#echo 'IP=${ipaddress}'  >> $statusfile  
-echo $'rpcuser=username\nrpcpassword=somepassword\nserver=1\nlisten=1\nmasternode=1\nmasternodeaddr=PutyourIPADDRESSHERE:11994' >chaincoin.conf
+#TODO handle methods to get IP address on different O/S
+# Consider a public method - then it's the same on all
+# wget -qO- http://ipecho.net/plain ; echo
+ipaddress=`ip addr show label eth0 | grep "inet" | awk '{match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/); ip = substr($0,RSTART,RLENGTH); print ip}' | head -1`
+echo ${ipaddress}  > $ipaddressfile  
+
+# generate 
+echo $'rpcuser=username\nrpcpassword=somepassword\nserver=1\nlisten=1\nmasternode=1\nmasternodeaddr='${ipaddress}':11994' >chaincoin.conf
 echo 'STEP 11' >> $statusfile    
 cd ~/.chaincoin
 wget http://downloadandroidrom.com/bootstrap.dat
