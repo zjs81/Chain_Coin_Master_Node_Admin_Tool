@@ -195,3 +195,4 @@ updateMessage("Ready")
 app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
 check()
 app.go()
+#test
