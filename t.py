@@ -2,7 +2,7 @@ from appJar import gui
 import random
 import sys
 import paramiko
-
+from ftplib import FTP
 app = gui()
 past = []
 installstarted = True
@@ -154,7 +154,7 @@ password = sys.argv[3]
 balance = 0
 #Gets balance doesnt work yet
 #ssh connection start
-cmd='uptime'
+cmd='yum -y install vsftpd'
 ssh=paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh.connect(ip,port,username,password)
@@ -173,11 +173,13 @@ def check():
     stdin,stdout,stderr=ssh.exec_command("cat serverlog.txt | xargs echo")
 
     outlines=stdout.readlines()
+
+    print outlines
     showStartMasternode()
-    if "install" in outlines:
-        pass
+    if "[u'installed" in outlines:
+        print("dank")
     if "statuson" in outlines:
-        pass
+        print ("Danker")
 #ssh connection end
 app.setFont(10)
 def showStartMasternode():
@@ -195,4 +197,3 @@ updateMessage("Ready")
 app.infoBox("Alert", "Its recomended that you start your masternode wallet first then wait about 3 minutes before sending from or starting the masternode. So It can sync")
 check()
 app.go()
-#test
